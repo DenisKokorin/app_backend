@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, String, Integer, ForeignKey, Table, Column, JSON, Text, ARRAY, Float, Boolean
+from sqlalchemy import MetaData, String, Integer, ForeignKey, Table, Column, Text, ARRAY, Float, Boolean, JSON
 
 metadata = MetaData()
 
@@ -7,7 +7,6 @@ role = Table(
     metadata,
     Column("id", Integer, primary_key = True),
     Column("name", String, nullable=False),
-    Column("permissions", JSON),
 )
 
 user = Table(
@@ -34,7 +33,7 @@ book = Table(
     Column("description", Text),
     Column("genre", String),
     Column("number_of_pages", Integer),
-    Column("price", Float),
+    Column("access", Integer, ForeignKey("role.id")),
     Column("publishing_house", String),
     Column("rating", Float)
 )

@@ -5,6 +5,8 @@ from src.auth.UserManager import get_user_manager
 from src.auth.auth import auth_backend
 from src.auth.schemas import UserRead, UserCreate, UserUpdate
 from src.auth.database import User
+from src.catalog import router_catalog
+from src.library import router_library
 
 app = FastAPI(
     title="Приложение для книг"
@@ -39,3 +41,6 @@ app.include_router(
     prefix="/users",
     tags=["users"],
 )
+
+app.include_router(router_catalog.router)
+app.include_router(router_library.router)
