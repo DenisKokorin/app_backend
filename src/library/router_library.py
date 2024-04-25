@@ -29,5 +29,3 @@ async def get_user_library(user_id: int, session: AsyncSession = Depends(get_asy
         return await result
     else:
         return {"not authorized"}
-
-

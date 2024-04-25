@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi_users import FastAPIUsers
-
+from fastapi.middleware.cors import CORSMiddleware
 from src.auth.UserManager import get_user_manager
 from src.auth.auth import auth_backend
 from src.auth.schemas import UserRead, UserCreate, UserUpdate
@@ -12,6 +12,19 @@ app = FastAPI(
     title="Приложение для книг"
 )
 
+origins = [
+    "http://localhost:8080",
+    "http://localhost:8000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
+    allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
+                   "Authorization"],
+)
 
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,

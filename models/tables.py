@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, String, Integer, ForeignKey, Table, Column, Text, ARRAY, Float, Boolean, JSON
+from sqlalchemy import MetaData, String, Integer, ForeignKey, Table, Column, Text, ARRAY, Float, Boolean, JSON, LargeBinary
 
 metadata = MetaData()
 
@@ -24,7 +24,7 @@ user = Table(
 )
 
 book = Table(
-    "books",
+    "book",
     metadata,
     Column("id", Integer, primary_key=True),
     Column("title", String, nullable=False),
@@ -35,5 +35,14 @@ book = Table(
     Column("number_of_pages", Integer),
     Column("access", Integer, ForeignKey("role.id")),
     Column("publishing_house", String),
-    Column("rating", Float)
+    Column("data", LargeBinary)
+)
+
+review = Table(
+    "reviews",
+    metadata,
+    Column("book_id", Integer, ForeignKey("book.id")),
+    Column("user_id", Integer, ForeignKey("user.id")),
+    Column("rating", Integer),
+    Column("text", String)
 )
