@@ -35,7 +35,7 @@ book = Table(
     Column("number_of_pages", Integer),
     Column("access", Integer, ForeignKey("role.id")),
     Column("publishing_house", String),
-    Column("data", LargeBinary)
+    Column("data", String)
 )
 
 review = Table(
