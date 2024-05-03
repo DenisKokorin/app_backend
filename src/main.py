@@ -1,18 +1,29 @@
 from fastapi import FastAPI
 from fastapi_users import FastAPIUsers
-
-from auth.UserManager import get_user_manager
-from auth.auth import auth_backend
-from auth.schemas import UserRead, UserCreate, UserUpdate
+from fastapi.middleware.cors import CORSMiddleware
+from src.auth.UserManager import get_user_manager
+from src.auth.auth import auth_backend
+from src.auth.schemas import UserRead, UserCreate, UserUpdate
+from src.auth.database import User
+from src.catalog import router_catalog
+from src.library import router_library
 
 app = FastAPI(
     title="Приложение для книг"
 )
 
-@app.get("/")
-def main_page():
-    return "Главная страница"
+origins = [
+    "http://localhost:8080",
+    "http://localhost:8000"
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
@@ -21,7 +32,7 @@ fastapi_users = FastAPIUsers[User, int](
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
-    prefix="/auth/log",
+    prefix="/auth",
     tags=["auth"],
 )
 
@@ -39,6 +50,12 @@ app.include_router(
 
 app.include_router(
     fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+
+app.include_router(router_catalog.router)
+app.include_router(router_library.router)router(UserRead, UserUpdate),
     prefix="/users",
     tags=["users"],
 )
