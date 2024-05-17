@@ -1,6 +1,4 @@
-import datetime
-
-from sqlalchemy import MetaData, String, Integer, ForeignKey, Table, Column, JSON, Text, ARRAY, Float, Boolean
+from sqlalchemy import MetaData, String, Integer, ForeignKey, Table, Column, Text, ARRAY, Boolean
 
 metadata = MetaData()
 
@@ -9,7 +7,6 @@ role = Table(
     metadata,
     Column("id", Integer, primary_key = True),
     Column("name", String, nullable=False),
-    Column("permissions", JSON),
 )
 
 user = Table(
@@ -27,7 +24,7 @@ user = Table(
 )
 
 book = Table(
-    "books",
+    "book",
     metadata,
     Column("id", Integer, primary_key=True),
     Column("title", String, nullable=False),
@@ -36,7 +33,23 @@ book = Table(
     Column("description", Text),
     Column("genre", String),
     Column("number_of_pages", Integer),
-    Column("price", Float),
+    Column("access", Integer, ForeignKey("role.id")),
     Column("publishing_house", String),
-    Column("rating", Float)
+)
+
+review = Table(
+    "reviews",
+    metadata,
+    Column("book_id", Integer, ForeignKey("book.id")),
+    Column("user_id", Integer, ForeignKey("user.id")),
+    Column("rating", Integer),
+    Column("text", String)
+)
+
+
+data_book = Table(
+    "data_book",
+    metadata,
+    Column("book_id", Integer, ForeignKey("book.id")),
+    Column("data", String)
 )
