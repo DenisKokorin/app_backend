@@ -3,3 +3,7 @@
 
 ## Авторизация
 В приложении используется готовая библиотека FastAPIusers для реализации аутентификации. Был использован набор cookie + JWT 
+
+' cookie_transport = CookieTransport(cookie_name="login",cookie_max_age=86400)
+def get_jwt_strategy() -> JWTStrategy:
+    return JWTStrategy(secret=SECRET, lifetime_seconds=86400) '
